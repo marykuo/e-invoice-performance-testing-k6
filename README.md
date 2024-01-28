@@ -67,11 +67,11 @@
 #### 巔峰負載測試
 不使用 Load Balancer
 - 系統會回傳 502（服務中斷）
-- ![stress-test-without-load-balancer](./images/stress-test-without-load-balancer.png)
+<img src="./images/stress-test-without-load-balancer.png" alt="stress-test-without-load-balancer" width="400"/>
 
 使用 Load Balancer
 - 能處理的 request 較多，服務時間會變長但不會中斷
-- ![stress-test-using-load-balancer](./images/stress-test-using-load-balancer.png)
+<img src="./images/stress-test-using-load-balancer.png" alt="stress-test-using-load-balancer" width="400"/>
 
 #### 穩定性測試
 是否使用 Load Balancer 對執行時間影響不大。
