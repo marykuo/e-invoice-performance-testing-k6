@@ -1,5 +1,5 @@
 # E-Invoice Performance Testing
-以下節錄了兩次壓測的結果
+以下節錄了兩次壓測的結果，詳細數據請見 `./reports` 資料夾下的 PDF 報告
 
 ## Overview
 1. [探索系統效能](#探索系統效能)
@@ -14,7 +14,7 @@
   - 直接開立發票 via WEB
   - 訂單開立發票 via API
 
-### 登入功能
+#### 登入功能
 |     | 調整前 | 調整後 |
 | --- | --- | --- |
 | 推薦負載 | 5 Requests Per Second<br>95%的使用者等待時間在0.2秒內 | 30 Requests Per Second<br>95%的使用者等待時間在0.2秒內 |
@@ -23,14 +23,14 @@
 > 發現有冗餘的程式碼去資料庫撈資料，經確認，該段邏輯是已棄用的功能。\
 > 拿掉後，確認可提高系統效能。
 
-### 直接開立發票
+#### 直接開立發票
 |     | 調整前 | 調整後 |
 | --- | --- | --- |
 | 推薦負載/巔峰負載 | 35 Requests Per Second | 50 Requests Per Second |
 
 > 發現"剩餘發票號碼數量"會大幅影響 Database 的查詢速度，因此有改寫 SQL。
 
-### 訂單開立發票
+#### 訂單開立發票
 |     | 調整前 | 調整後 |
 | --- | --- | --- |
 | 推薦負載/巔峰負載 | 105 Requests Per Second | 100 Requests Per Second |
@@ -39,12 +39,12 @@
 > 經確認，是由於 Database Connection Pool 數量設定過少導致的。\
 > 該調整，雖然會導致使用者等待時間增加0.1秒，但可大幅減少 Database CPU 用量，因此將該設定值略調高一些。
 
-### 雲端機器調整
+#### 雲端機器調整
 (以其中一位客戶舉例)
 客戶資料
 - 使用功能：主要使用"訂單開立發票"
-- 業務高峰：每天的餐食(11:00~13:00、17:00~19:00)
-- 歷史資料：110年，平均每日開立100萬張發票。
+- 業務高峰：每天的餐食(11:00-13:00、17:00-19:00)
+- 歷史資料：110年，每日最多開立100萬張發票。
 
 > 若100萬張發票，分散於餐食4小時使用，則每秒約開立70張發票\
 > 最低規格為1 台2 vCPU 的 VM
@@ -64,7 +64,7 @@
   - 透過 IP 呼叫服務
   - 透過 Load balancer 呼叫服務
 
-### 巔峰負載測試
+#### 巔峰負載測試
 不使用 Load Balancer
 - 系統會回傳 502（服務中斷）
 - ![stress-test-without-load-balancer](./images/stress-test-without-load-balancer.png)
@@ -73,5 +73,5 @@
 - 能處理的 request 較多，服務時間會變長但不會中斷
 - ![stress-test-using-load-balancer](./images/stress-test-using-load-balancer.png)
 
-### 穩定性測試
+#### 穩定性測試
 是否使用 Load Balancer 對執行時間影響不大。
